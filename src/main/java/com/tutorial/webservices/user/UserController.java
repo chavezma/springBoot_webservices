@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> retrieveAllUsers(@PathVariable Integer id){
+    public ResponseEntity<User> retrieveUser(@PathVariable Integer id){
         User selectedUser = userDaoService.retrieveById(id);
 
         if( Objects.isNull(selectedUser) )
@@ -46,5 +47,13 @@ public class UserController {
             .buildAndExpand(savedUser.getId())
             .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<User> deleteUserById(@PathVariable Integer id){
+        User selectedUser = retrieveUser(id).getBody();
+        userDaoService.deleteUserById(id);
+
+        return ResponseEntity.ok().body(selectedUser);
     }
 }

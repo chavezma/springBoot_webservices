@@ -24,4 +24,8 @@ public class UserDaoService {
     public User createUser(UserDTO user) {
         return userRepository.save(new User(user.getId(), user.getName(), user.getBithDate()));
     }
+
+    public void deleteUserById(Integer id) {
+        userRepository.deleteById(id);
+    }
 }
